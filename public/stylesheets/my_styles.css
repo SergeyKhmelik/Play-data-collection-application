@@ -1,0 +1,40 @@
+.table th, td {
+    text-align: left;
+}
+
+.table-responsive {
+    margin: 50px 5px 50px 5px;
+}
+
+.container {
+    padding: 25px 25px 25px 25px;
+}
+
+.form-column {
+    text-align: left;
+    margin-right: 100px;
+}
+
+.error {
+    color: red;
+}
+
+.form-row {
+    padding-top: 20px;
+}
+
+.buttonset input {
+    display: inline;
+}
+
+.buttonset label {
+    font-weight: normal;
+}
+
+.page-center {
+    position: absolute;
+    top:45%; /* height divided by 2*/
+    left:25%; /* width divided by 2*/
+    right:25%; /* height divided by 2*/
+    bottom:45%; /* width divided by 2*/
+}

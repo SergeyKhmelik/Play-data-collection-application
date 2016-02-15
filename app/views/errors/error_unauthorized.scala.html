@@ -1,0 +1,27 @@
+@navbar("Oops!", "fields") {
+
+  <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/error_page.css")">
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="error-template">
+
+          <h1>Oops!</h1>
+
+          <h2>401 Unauthorised</h2>
+
+          <div class="error-details">
+            Sorry, an error has occured! You are not authorized in the system! Use "Login" button to authorize.
+          </div>
+
+          <div class="error-actions">
+            <a href="@routes.ResponseController.createResponse()"
+            class="btn btn-primary btn-lg">Back to response form</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+}

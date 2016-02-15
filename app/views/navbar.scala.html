@@ -1,0 +1,102 @@
+@(title: String, active: String)(content: Html)
+
+    @import helper._;
+
+    @main(title) {
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#navbar-collapse-data" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/">Questioner</a>
+                </div>
+
+                <div class="collapse navbar-collapse" id="navbar-collapse-data">
+                    <!-- Navbar header items -->
+                    <ul class="nav navbar-nav">
+                        <li class="@if("fields".eq(active)){active}
+                            @if(session == null || session.get("user") == null){hidden}">
+                            <a class="btn btn-link" href="@routes.FieldController.getAllFields()">
+                                Fields</a>
+                        </li>
+
+                        <li class="@if("responses".eq(active)){active}
+                            @if(session == null || session.get("user") == null){hidden}">
+                            <a class="btn btn-link" href="@routes.ResponseController.getAllResponses()">
+                                Responses
+                                <span id="responses-count-badge" class="badge">0</span>
+                            </a>
+                        </li>
+                    </ul>
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li id="logout-nav-btn" class="@if(session == null || session.get("user") == null){hidden}">
+                            <a class="btn btn-link" href="@routes.UserController.logout()">Logout</a>
+                        </li>
+                        <li id="login-nav-btn" class="@if(session != null && session.get("user") != null){hidden}">
+                            <a href="#" data-toggle="modal" data-target="#login-modal" class="btn btn-link">Login</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        @content
+
+        <!-- Login modal -->
+        <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="loginModal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="loginModal">Log in to your account</h4>
+                    </div>
+
+                    <div class="modal-body">
+                        @form(action = routes.UserController.login(),
+                            'class -> "text-left",
+                            'id -> "loginForm") {
+
+                            <!-- Global error alert message -->
+                            <div class="global-error-div alert alert-danger fade in hidden">
+                                <a href="#" class="close" aria-label="close">&times;</a>
+                                <strong>Warning!</strong><span class="alert-span"></span>
+                            </div>
+
+                            <div id="username_field" class="form-group required">
+                                <label class="sr-only" for="form-login-username-input">Login</label>
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <span class="glyphicon glyphicon-user"></span>
+                                    </div>
+                                    <input type="text" name="username" placeholder="Login..."
+                                        class="form-control" id="form-login-username-input">
+                                </div>
+                            </div>
+
+                            <div id="password_field" class="form-group">
+                                <label class="sr-only" for="form-login-password-input">Password</label>
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <span class="glyphicon glyphicon-lock"></span>
+                                    </div>
+                                    <input type="password" name="password" placeholder="Password..."
+                                        class="form-control" id="form-login-password-input">
+                                </div>
+                            </div>
+
+                            <div class="form-group text-right">
+                                <input id="btn-login-submit" type="submit" class="btn btn-primary" value="Log In"/>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }

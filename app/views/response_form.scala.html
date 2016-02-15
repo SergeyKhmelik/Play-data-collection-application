@@ -1,0 +1,137 @@
+@(responseForm: Form[models.Response], fields: List[models.Field])
+
+@import helper._;
+
+@navbar("Questioner", "responses") {
+
+    @if(fields.size == 0) {
+        <div class="page-center text-center">
+            <h2>No fields available atm. Please, create new field
+                or set "inactive" fields into an "active" state.</h2>
+        </div>
+    } else {
+        <div class="container">
+            <div class="row">
+                <h3>Questioner<br/>
+                    <small>Fields with * are required</small>
+                </h3>
+
+                @form(action = routes.ResponseController.createResponse(),
+                    'class -> "text-left",
+                    'id -> "response_form") {
+
+					@CSRF.formField
+
+					<div class="global-error-div alert alert-danger fade in hidden">
+						<a href="#" class="close" aria-label="close">&times;</a>
+						<strong>Warning! </strong><span class="alert-span"></span>
+						<p>Please, refresh this page. Some data can be outdated.</p>
+					</div>
+
+                    @for(field <- fields) {
+                        @if(field.fieldType.eq(FieldType.SINGLE_LINE_TEXT)) {
+                            <div class="row form-row">
+                            	<div class="col-sm-6 form-column @if(field.required){required}">
+	                            @inputText(field = responseForm(field.label),
+	                                '_label -> {
+	                                    if(field.required) field.label + ":*" else field.label
+	                                },
+	                                'class -> "form-control")
+                                </div>
+                            </div>
+                        }
+
+
+                        @if(field.fieldType.eq(FieldType.MULTI_LINE_TEXT)) {
+                            <div class="row form-row">
+                            	<div class="col-sm-6 form-column @if(field.required){required}">
+	                            @textarea(field = responseForm(field.label),
+	                                '_label -> {
+	                                    if(field.required) field.label + ":*" else field.label
+	                                },
+	                                'class -> "form-control")
+                            	</div>
+                            </div>
+                        }
+
+                        @if(field.fieldType.eq(FieldType.RADIO)) {
+                            <div class="row form-row">
+                            	<div class="col-sm-6 form-column @if(field.required){required}">
+	                            @inputRadioGroup(field = responseForm(field.label),
+	                                options = options(field.options.map(option => option.value).toList),
+	                                '_label -> {
+	                                    if(field.required) field.label + ":*" else field.label
+	                                })
+                                </div>
+                            </div>
+                        }
+
+                        @if(field.fieldType.eq(FieldType.CHECKBOX)) {
+                            <div class="row form-row">
+                            	<div class="col-sm-6 form-column @if(field.required){required}">
+	                            @inputCheckboxGroup(field = responseForm(field.label),
+	                                options = options(field.options.map(option => option.value).toList),
+	                                '_label -> {
+	                                    if(field.required) field.label + ":*" else field.label
+	                                })
+								</div>
+                            </div>
+                        }
+
+                        @if(field.fieldType.eq(FieldType.COMBOBOX)) {
+                            <div class="row form-row">
+                            	<div class="col-sm-6 form-column @if(field.required){required}">
+	                            @select(field = responseForm(field.label),
+	                                options = options(field.options.map(option => option.value).toList),
+	                                '_label -> {
+	                                    if(field.required) field.label + ":*" else field.label
+	                                },
+	                                'class -> "form-control")
+                            	</div>
+                            </div>
+                        }
+
+                        @if(field.fieldType.eq(FieldType.DATE)) {
+                            <div class="row form-row">
+                            	<div class="col-sm-6 form-column @if(field.required){required}">
+	                            @inputDate(field = responseForm(field.label),
+	                                '_label -> {
+	                                    if(field.required) field.label + ":*" else field.label
+	                                },
+	                                'class -> "form-control")
+                            	</div>
+                            </div>
+                        }
+                        
+                        @if(field.fieldType.eq(FieldType.RANGE)) {
+                        	<div class="row form-row">
+                            	<div class="col-sm-6 form-column @if(field.required){required}">
+                            		<label for="@field.label">
+                            			@if(field.required) {
+                            				@field.label:*
+                            			} else {
+                            				@field.label
+                            			}
+                            		</label>
+                            		<input id="@field.label" name="@field.label" type="range" 
+                            			value="@responseForm(field.label)">
+                            	</div>
+                            </div>
+                        }
+
+                    }
+                    <div class="row form-row">
+                    	<div class="col-sm-6 form-column">
+							<button type="submit" class="btn btn-primary">
+									<span class="glyphicon glyphicon-floppy-disk"></span> Save
+							</button>
+							<button type="reset" class="btn btn-primary">
+								<span class="glyphicon glyphicon-remove"></span> Reset
+							</button>
+                    	</div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+}

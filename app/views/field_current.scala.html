@@ -1,0 +1,83 @@
+@(fieldForm: Form[models.dto.FieldDTO], idField: Int, fieldTypes: EnumSet[FieldType])
+
+    @import java.util.EnumSet;
+    @import helper._;
+    @import views.html.inputs.options_input
+
+    @navbar("Create/Edit Field", "fields") {
+        <div class="container">
+            <div class="row">
+
+                <h3>Create/Edit field<br/>
+                    <small>Fields with * are required</small>
+                </h3>
+
+                @form(action = routes.FieldController.saveOrUpdateField(idField),
+                    'class -> "text-left",
+                    'id -> "fieldCreationForm") {
+
+                    @CSRF.formField
+
+                    <div class="global-error-div alert alert-danger fade in hidden">
+                        <a href="#" class="close" aria-label="close">&times;</a>
+                        <strong>Warning!</strong><span class="alert-span"></span>
+                    </div>
+
+                    <div class="row form-row">
+                        <div class="col-sm-3 form-column required">
+                        @inputText(fieldForm("label"),
+                            '_label -> "Label:*",
+                            'class -> "form-control")
+                        </div>
+
+                        <div class="col-sm-3 form-column">
+                        @checkbox(field = fieldForm("required"),
+                            '_label -> "Required:*",
+                            'class -> "checkbox")
+                        </div>
+                    </div>
+
+                    <div class="row form-row">
+                        <div class="col-sm-3 form-column required">
+                        @select(field = fieldForm("fieldType"),
+                            options = options(fieldTypes.map(fType => fType.getUserRepresentation).toList),
+                            '_label -> "Type:*",
+                            'class -> "form-control")
+                        </div>
+
+                        <div class="col-sm-3 form-column">
+                        @checkbox(field = fieldForm("active"),
+                            '_label -> "Is Active:*",
+                            'class -> "checkbox")
+                        </div>
+                    </div>
+
+                    <div class="row form-row">
+                        <div id="options-div" class="col-sm-3 form-column
+                        @if(!(fieldForm("fieldType").value.eq(FieldType.COMBOBOX.getUserRepresentation) ||
+                                fieldForm("fieldType").value.eq(FieldType.CHECKBOX.getUserRepresentation) ||
+                                fieldForm("fieldType").value.eq(FieldType.RADIO.getUserRepresentation))) {hidden}
+                        ">
+
+                        @if(fieldForm.value.isEmpty || fieldForm.get.options.isEmpty) {
+                            @options_input(fieldForm, scala.collection.immutable.List("Option 1", "Option 2"))
+                        } else {
+                            @options_input(fieldForm, fieldForm.get.options)
+                        }
+                        </div>
+                    </div>
+
+                    <div class="row form-row">
+                        <div id="submit-reset-field-btn" class="col-sm-3 form-column">
+                            <button type="submit" class="btn btn-primary">
+                                <span class="glyphicon glyphicon-floppy-disk"></span> Save
+                            </button>
+                            <button type="reset" class="btn btn-primary">
+                                <span class="glyphicon glyphicon-remove"></span> Reset
+                            </button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }

@@ -1,0 +1,52 @@
+Final task by Serhii Khmelyk
+=================================
+
+Technical requirements:
+1. Internet connection
+2. Java 8
+3. PostgreSQL DB
+
+
+Installation:
+1. Configure your DB connection in conf/application.conf file (username, password, url).
+You should create "infostroy_play_db" database.
+2. Go to the project root directory and type "activator run" in terminal.
+3. In your browser head for localhost:9000 url.
+4. Done! Now you can enjoy the application working.
+You can log in as an administrator using "admin" username and "admin" password.
+
+As plus:
+1. QueryDSL is used.
+2. Logging applied on each controller class.
+3. CSRF protection applied.
+3. Uploaded on Heroku cloud app service. You can access this application by url:
+http://tranquil-beyond-90785.herokuapp.com/ It is ok if app will take some time on first load.
+
+Small application guide about some tricky situations, that can occur (admin vs anonymous user collisions):
+1. Anonymous user has access only to one page. Unauthorized user can answer the questioner.
+
+2. If anonymous user loads questioner page and then admin adds new required field, user will receive a
+warning that his answer has outdated data and will be asked to refresh the page.
+
+3. If anonymous user answers on a multichoicable field while admin deletes the chosen option - user will
+receive a Warning message that some options can be outdated and will be asked to refresh the page.
+
+4. If anonymous user answers the questioner while admin deletes some field - users answer will be saved
+without deleted field_answer.
+
+5. Admin can log in to system by entering his credentials into "Login" modal, that can be accessed from navbar.
+Default login and password are "admin", "admin".
+
+6. Admin can create new fields, delete old fields, edit existing fields and overview users' results info.
+
+7. Admin cannot create new field with already existing label. Admin also cannot create a new multioptional
+field with less then 2 unique not empty options. All option and label values are trimmed therefore whitespaces won't
+work.
+
+8. Admin can edit the whole field properties if there is no answer on this field yet. Admin can edit only "required"
+and "active" field if the field has been already answered.
+
+9. Admin can delete every field.
+
+10. Each time admin deletes a field, application will search for user responses, that have no answers (all answers
+are shown as "N/A" in responses table) and remove them from DB.

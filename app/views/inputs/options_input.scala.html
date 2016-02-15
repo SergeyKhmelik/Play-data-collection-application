@@ -1,0 +1,21 @@
+@(fieldForm: Form[models.dto.FieldDTO], options: List[String])
+
+<div id="options_field" class="form-group @if(fieldForm("options").hasErrors) {has-error}">
+    <label for="options-list">Options:*</label>
+
+    <div id="options-list">
+        @for(option <- options) {
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Write option text here." value="@option">
+                <span class="input-group-btn">
+                    <button class="btn btn-default btn-delete-option" type="button">X</button>
+                </span>
+            </div>
+        }
+        <div id="add-new-option">
+            <input type="text" readonly placeholder="Add new option..."
+            class="form-control add-new-option-btn"/>
+        </div>
+    </div>
+
+</div>
