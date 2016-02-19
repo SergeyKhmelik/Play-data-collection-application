@@ -34,6 +34,7 @@ public class FieldServiceImpl implements FieldService, OptionMerging {
 
 	@Override
 	public Field updateField(Field field) {
+		field.options = mergeOptions(field.options, field);
 		if(hasAnswers(field) && hasImmutablePropertiesUpdate(field)) {
 			return null;
 		}

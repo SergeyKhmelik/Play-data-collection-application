@@ -59,7 +59,7 @@ public class Response {
                 if (answer.field.required && answer.isEmptyAnswer()) {
                 	errors.add(new ValidationError(answer.field.label, "Field is required."));
                 }
-                if(answer.field.fieldType.equals(FieldType.DATE) && !isValidDate(answer.value)) {
+                if(answer.field.fieldType.equals(FieldType.DATE) && !answer.value.isEmpty() && !isValidDate(answer.value)) {
                     errors.add(new ValidationError(answer.field.label,
                             "Wrong date format. Please, use yyyy-mm-dd format."));
                 }
